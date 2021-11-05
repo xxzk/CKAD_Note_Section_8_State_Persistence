@@ -35,3 +35,19 @@ spec:
       # this field is optional
       type: Directory
 ```
+
+<br>
+
+## 106. Persistent Volumes
+
+<br>
+
+Persistent Volumes 可以把它當作是一塊 shared storge，而 Persistent Volume Claims 則是有點像從 PV 宣告一塊儲存空間可以供 K8s Object 使用。
+
+<br>
+
+![pvc_0](pvc_0.jpg)
+
+▲ Persistent Volume 與 PVC 關係示意圖
+
+<br>
