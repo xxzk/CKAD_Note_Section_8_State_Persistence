@@ -149,3 +149,69 @@ spec:
 
 <br>
 
+PVC 宣告完之後 `pod` 或者其它 K8s Object 要怎麼使用呢? 這邊有範例:
+
+
+```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: mypod
+    spec:
+      containers:
+        - name: myfrontend
+          image: nginx
+          volumeMounts:
+          - mountPath: "/var/www/html"
+            name: mypd
+      volumes:
+        - name: mypd
+          persistentVolumeClaim:
+            claimName: myclaim
+```
+
+<br>
+
+---
+
+## (CKAD 不考) 112. Storage Classes
+
+<br>
+
+每次創 PVC 之前都要先創建 PV 很煩、很不自動，怎麼辦 ? **<span style='color:red'>Storage Classes</span>** 可以讓你在建立 PVC 時順便幫你建好 PV~\
+vSphere, ProxmoxVE 的 provisor 都有內建在 K8s 裡面!!
+
+<br>
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: vsphere
+provisioner: kubernetes.io/vsphere-volume
+parameters:
+  diskformat: zeroedthick
+```
+
+▲ vSphere 的 `Storage Class`
+
+<br>
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-vsphere-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: vsphere
+```
+
+▲ 在建立 PVS 的時候加入 `storageClassName: vsphere` 就可以使用囉!
+
+<br>
+
