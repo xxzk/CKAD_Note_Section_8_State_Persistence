@@ -373,3 +373,41 @@ spec:
 
 <br>
 
+## (CKAD 不考) 117. Storage in StatefulSets
+
+<br>
+
+![storage_statefulset_0](storage_statefulset_0.jpg)
+
+▲ 在 `StatefulSet` 沒有使用 `.spec.volumeClaimTemplates` 的話，三個 MySQL `pod` 都會共用同一個 `PVC`。
+
+<br>
+
+![storage_statefulset_1](storage_statefulset_1.jpg)
+
+▲ 用上 `.spec.volumeClaimTemplates` 就會長這樣，其中 `.spec.volumeClaimTemplates` 的內容就是 `PVC` 啦~\
+**<span style='color:red'>不過當 `pod` 因為某些原因被 re-create 的話，它將延續使用舊有 `PVC`</span>**
+
+<br>
+
+### 問問筆記
+
+
+大家好，我想請問一個關於 `StatefulSet` 使用 `.spec.volumeClaimTemplates` 的問題:
+
+以這個範例來說會產生三個 `pod` (假設叫做 `pod{1..3}`)，當 `pod1` 因為某些原因被 re created 了，它將延續使用舊有的 PVC。
+如果我不想呢? 想給 `pod1` 全新的一個 PVC
+請問有什麼做法呢?
+如果在 PVC `.spec.persistentVolumeReclaimPolicy` 設定 Recycle/Delete 是不是可行? 謝謝
+
+
+範例: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#components
+
+
+**<span style='color:red'>Ans:</span>**
+
+
+不行，Policy 定義的是當 PVC 消失後 PV 被怎麼處理。而且這個需求與 `StatefulSet` 反其道而行。\
+[Hiskio-Kubernetes](https://t.me/hiskio_k8s/7000)
+
+<br>
