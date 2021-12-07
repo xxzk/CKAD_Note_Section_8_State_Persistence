@@ -42,13 +42,13 @@ spec:
 
 <br>
 
-Persistent Volumes 可以把它當作是一塊 shared storge，而 Persistent Volume Claims 則是有點像從 PV 宣告一塊儲存空間可以供 K8s Object 使用。
+Persistent Volumes 將 Storage (Disk) 抽象化，供上層 PVC (Persistent Volume Claim) 使用。並且擁有自己的 lifecycle (`pv.spec.persistentVolumeReclaimPolicy`)
 
 <br>
 
-![pvc_0](pvc_0.jpg)
+![pv_and_pvc_relationship_diagram](pv_and_pvc_relationship_diagram.jpg)
 
-▲ Persistent Volume 與 PVC 關係示意圖
+▲ Persistent Volume 與 PVC 關係示意圖。 [圖片來源](https://medium.com/devops-mojo/kubernetes-storage-options-overview-persistent-volumes-pv-claims-pvc-and-storageclass-sc-k8s-storage-df71ca0fccc3)
 
 <br>
 
