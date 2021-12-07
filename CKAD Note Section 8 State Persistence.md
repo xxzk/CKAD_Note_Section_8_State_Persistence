@@ -124,28 +124,38 @@ kubectl get persistentvolumeclaims
 
 <br>
 
-可以在 PVC YAML 裡面定義，當 PVC 被刪除 PV 要怎麼被處裡
+`pv.spec.persistentVolumeReclaimPolicy` 定義當 PV 不被 PVC 使用時，該怎麼被處理。
 
 
 ```yaml
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: myclaim
+  name: pv0003
 spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Mi
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /tmp
+    server: 172.17.0.2
 ```
 
 <br>
 
 - (Default) Retain: 除非被 Administrator 刪除，不然保留 **<span style='color:red'>而且不被其它 PVC 使用</span>**。
-- Recycle: 刪除 PV 底下的資料 (`rm -rf /thevolume/*`) **<span style='color:blue'>可以被其它 PVC 使用</span>**。
+- 【Deprecated】Recycle: 刪除 PV 底下的資料 (`rm -rf /thevolume/*`) **<span style='color:blue'>可以被其它 PVC 使用</span>**。
 - Delete: 直接刪除 PV。
+
+
+recycle 已被 deprecated 的 Announcement: [Re: Persistent Volume Recycler Deprecation Annoucement](https://groups.google.com/g/kubernetes-dev/c/uexugCza84I)
 
 <br>
 
